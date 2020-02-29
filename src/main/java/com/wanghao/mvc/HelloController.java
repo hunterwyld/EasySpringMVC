@@ -16,16 +16,19 @@ public class HelloController {
     @Autowired
     private NameService nameService;
 
+    @Autowired
+    private TestService testService;
+
     @RequestMapping("/to")
     public String sayHelloTo() {
-        String ret = "say hello to " + nameService.getName();
+        String ret = "say hello to " + nameService.getName("wanghao");
         System.out.println(ret);
         return ret;
     }
 
     @RequestMapping("/from")
     public String sayHelloFrom() {
-        String ret = "say hello from " + nameService.getName();
+        String ret = "say hello from " + nameService.getName("wanghao");
         System.out.println(ret);
         return ret;
     }

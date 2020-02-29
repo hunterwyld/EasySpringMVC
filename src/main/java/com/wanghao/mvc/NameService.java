@@ -1,5 +1,6 @@
 package com.wanghao.mvc;
 
+import com.wanghao.mvc.annotation.Autowired;
 import com.wanghao.mvc.annotation.Service;
 
 /**
@@ -10,7 +11,11 @@ import com.wanghao.mvc.annotation.Service;
 @Service("nameService")
 public class NameService {
 
-    public String getName() {
-        return "wanghao";
+    @Autowired
+    private TestService testService;
+
+    public String getName(String name) {
+        System.out.println("testService is null: " + (testService == null));
+        return name;
     }
 }

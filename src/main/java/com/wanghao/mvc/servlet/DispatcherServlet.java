@@ -59,11 +59,11 @@ public class DispatcherServlet extends HttpServlet {
 
         for (Map.Entry<String, Object> entry : beanMap.entrySet()) {
             Object instance = entry.getValue();
-            Class clazz = instance.getClass();
+            Class<?> clazz = instance.getClass();
             if (clazz.isAnnotationPresent(Controller.class)) {
                 String path;
                 if (clazz.isAnnotationPresent(RequestMapping.class)) {
-                    path = ((RequestMapping) clazz.getAnnotation(RequestMapping.class)).value();
+                    path = clazz.getAnnotation(RequestMapping.class).value();
                 } else {
                     path = "";
                 }
@@ -115,15 +115,15 @@ public class DispatcherServlet extends HttpServlet {
         try {
             for (String className : classNameSet) {
                 String realClassName = className.replaceAll("\\.class", "");
-                Class clazz = Class.forName(realClassName);
-                Controller controllerAnno = (Controller) clazz.getAnnotation(Controller.class);
+                Class<?> clazz = Class.forName(realClassName);
+                Controller controllerAnno = clazz.getAnnotation(Controller.class);
                 if (controllerAnno != null) {
                     Object bean = clazz.newInstance();
                     String beanName = BeanUtils.getControllerBeanName(clazz);
                     beanMap.put(beanName, bean);
 
                     if (clazz.isAnnotationPresent(RequestMapping.class)) {
-                        RequestMapping requestMappingAnno = (RequestMapping) clazz.getAnnotation(RequestMapping.class);
+                        RequestMapping requestMappingAnno = clazz.getAnnotation(RequestMapping.class);
                         String path = requestMappingAnno.value();
                         if (!"".equals(path)) {
                             controllerMap.put(path, bean);
@@ -133,7 +133,7 @@ public class DispatcherServlet extends HttpServlet {
                     continue;
                 }
 
-                Service serviceAnno = (Service) clazz.getAnnotation(Service.class);
+                Service serviceAnno = clazz.getAnnotation(Service.class);
                 if (serviceAnno != null) {
                     Object bean = clazz.newInstance();
                     String beanName = BeanUtils.getServiceBeanName(serviceAnno, clazz);
